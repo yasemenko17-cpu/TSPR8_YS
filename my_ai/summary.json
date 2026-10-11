@@ -1,1 +1,16 @@
-{}
+{
+  "records": 9,
+  "accepted_pct": 77.8,
+  "fixed_pct": 22.2,
+  "rejected_pct": 0.0,
+  "defects_caught": 2,
+  "defects_escaped": 0,
+  "minutes_ai": 85,
+  "minutes_manual_est": 205,
+  "saved_pct": 58.5,
+  "lessons": [
+    "Асистент потребує чітких ролей та шаблонів.",
+    "Необхідно завжди перевіряти негативні тести.",
+    "ШІ економить багато часу при генерації."
+  ]
+}

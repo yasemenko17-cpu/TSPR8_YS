@@ -1,10 +1,22 @@
 {
-  "name": "",
-  "goal": "",
-  "source": "",
-  "tool_name": "",
-  "tool_plan": "",
-  "roles": [],
-  "vocabulary": [],
-  "privacy": {"personal_data_sent": false, "secrets_sent": false, "settings_checked": false}
+  "name": "Мобільний застосунок «Паркуй»",
+  "goal": "Зручне бронювання вільних місць на парковці та онлайн-оплата годин стоянки",
+  "source": "навчальний кейс",
+  "case": 2,
+  "tool_name": "GitHub Copilot",
+  "tool_plan": "безкоштовний",
+  "roles": [
+    "водій",
+    "адміністратор"
+  ],
+  "vocabulary": [
+    "бронь",
+    "паркінгове місце",
+    "сесія"
+  ],
+  "privacy": {
+    "personal_data_sent": false,
+    "secrets_sent": false,
+    "settings_checked": true
+  }
 }
