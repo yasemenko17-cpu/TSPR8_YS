@@ -1,0 +1,658 @@
+{
+ "context": 1,
+ "name": "Рух",
+ "domain": "застосунок запису на групові заняття спортивного клубу",
+ "description": [
+  "Застосунок «Рух» дає змогу учасникам клубу записатися на групові заняття.",
+  "У групі не більше 12 місць.",
+  "Скасувати запис можна не пізніше ніж за 3 години до початку, інакше заняття списується з абонемента.",
+  "Абонемент дає 8 занять і його можна заморозити на строк до 14 діб.",
+  "Якщо місць немає, учасник потрапляє у список очікування, у якому не більше 5 осіб.",
+  "Нагадування про заняття надходить за 2 години до початку.",
+  "Тренер відзначає присутність, адміністратор клубу складає розклад."
+ ],
+ "roles": [
+  "учасник",
+  "тренер",
+  "адміністратор клубу"
+ ],
+ "solution_words": [
+  "sql",
+  "api",
+  "json",
+  "кнопк",
+  "таблиц",
+  "базі даних",
+  "базу даних"
+ ],
+ "facts": [
+  {
+   "stem": "місц",
+   "value": 12,
+   "unit": "місце"
+  },
+  {
+   "stem": "скасув",
+   "value": 3,
+   "unit": "год"
+  },
+  {
+   "stem": "абонемент",
+   "value": 8,
+   "unit": "заняття"
+  },
+  {
+   "stem": "заморож",
+   "value": 14,
+   "unit": "доб"
+  },
+  {
+   "stem": "очікуван",
+   "value": 5,
+   "unit": "особа"
+  },
+  {
+   "stem": "нагадуван",
+   "value": 2,
+   "unit": "год"
+  }
+ ],
+ "features": [
+  "розклад",
+  "присутн",
+  "запис",
+  "тренер",
+  "адміністратор"
+ ],
+ "assistant_answers": {
+  "draft_stories": [
+   {
+    "id": "D-1",
+    "text": "Як учасник, я хочу скасувати запис на заняття, щоб не втратити заняття з абонемента.",
+    "criteria": [
+     "Дано запис за 4 години до початку, коли учасник скасовує, тоді заняття не списується.",
+     "Дано запис за 1 годину до початку, коли учасник скасовує, тоді заняття списується.",
+     "Дано скасований запис, коли місце звільнилося, тоді воно доступне іншим."
+    ],
+    "estimate": 3
+   },
+   {
+    "id": "D-2",
+    "text": "Як учасник, я хочу бачити розклад занять, щоб бачити розклад.",
+    "criteria": [
+     "Дано сторінку розкладу, коли учасник відкриває її, тоді він бачить заняття тижня.",
+     "Дано заняття без місць, коли учасник дивиться розклад, тоді позначено «місць немає»."
+    ],
+    "estimate": 2
+   },
+   {
+    "id": "D-3",
+    "text": "Як постійний клієнт, я хочу отримувати знижки, щоб заощаджувати гроші.",
+    "criteria": [
+     "Дано 10 відвідувань, коли клієнт записується, тоді він бачить знижку.",
+     "Дано відсутність відвідувань, коли клієнт записується, тоді знижки немає."
+    ],
+    "estimate": 5
+   },
+   {
+    "id": "D-4",
+    "text": "Як тренер, я хочу натиснути кнопку «Присутній» у таблиці, щоб відзначити присутність учасників.",
+    "criteria": [
+     "Дано список групи, коли тренер натискає кнопку, тоді присутність збережено.",
+     "Дано відмітку, коли тренер помилився, тоді він її змінює."
+    ],
+    "estimate": 3
+   },
+   {
+    "id": "D-5",
+    "text": "Додати перегляд розкладу для всіх.",
+    "criteria": [
+     "Розклад відображається."
+    ],
+    "estimate": 2
+   },
+   {
+    "id": "D-6",
+    "text": "Як адміністратор клубу, я хочу створювати розклад занять на тиждень, щоб учасники могли планувати відвідування.",
+    "criteria": [
+     "Дано порожній тиждень, коли адміністратор додає заняття, тоді воно в розкладі.",
+     "Дано заняття, коли адміністратор змінює час, тоді учасників сповіщено.",
+     "Дано заняття, коли адміністратор скасовує його, тоді записи скасовано.",
+     "Дано два заняття, коли час збігається, тоді система попереджає.",
+     "Дано тренера, коли його немає, тоді заняття не створюється.",
+     "Дано шаблон тижня, коли його копіюють, тоді всі заняття перенесено."
+    ],
+    "estimate": 8
+   }
+  ],
+  "draft_requirements": [
+   {
+    "id": "R-1",
+    "text": "У групі може бути до 12 місць."
+   },
+   {
+    "id": "R-2",
+    "text": "Скасувати запис можна за 180 хвилин до початку без списання заняття."
+   },
+   {
+    "id": "R-3",
+    "text": "Скасувати запис без списання можна не пізніше ніж за 2 години до початку."
+   },
+   {
+    "id": "R-4",
+    "text": "Абонемент дає 10 занять."
+   },
+   {
+    "id": "R-5",
+    "text": "За запис друга учасник отримує бонус 50 грн."
+   },
+   {
+    "id": "R-6",
+    "text": "Клуб надає знижку на персональні заняття з дієтологом."
+   },
+   {
+    "id": "R-7",
+    "text": "Тренер відзначає присутність учасників."
+   },
+   {
+    "id": "R-8",
+    "text": "Список очікування вміщує до 7 осіб."
+   }
+  ],
+  "acceptance_criteria": [
+   {
+    "id": "AC-1",
+    "boundary": 12
+   },
+   {
+    "id": "AC-2",
+    "boundary": 5
+   },
+   {
+    "id": "AC-3",
+    "boundary": 14
+   },
+   {
+    "id": "AC-4",
+    "boundary": 8
+   },
+   {
+    "id": "AC-5",
+    "boundary": null
+   }
+  ],
+  "generated_tests": [
+   {
+    "id": "T-1",
+    "covers": [
+     "AC-1"
+    ],
+    "value": 12,
+    "expect": "ok"
+   },
+   {
+    "id": "T-2",
+    "covers": [
+     "AC-1"
+    ],
+    "value": 13,
+    "expect": "error"
+   },
+   {
+    "id": "T-3",
+    "covers": [
+     "AC-2"
+    ],
+    "value": 5,
+    "expect": "ok"
+   },
+   {
+    "id": "T-4",
+    "covers": [
+     "AC-2"
+    ],
+    "value": 3,
+    "expect": "ok"
+   },
+   {
+    "id": "T-5",
+    "covers": [
+     "AC-3"
+    ],
+    "value": 10,
+    "expect": "ok"
+   },
+   {
+    "id": "T-6",
+    "covers": [
+     "AC-3",
+     "AC-9"
+    ],
+    "value": 15,
+    "expect": "error"
+   },
+   {
+    "id": "T-7",
+    "covers": [],
+    "value": null,
+    "expect": "ok"
+   },
+   {
+    "id": "T-8",
+    "covers": [
+     "AC-5"
+    ],
+    "value": null,
+    "expect": "ok"
+   },
+   {
+    "id": "T-9",
+    "covers": [
+     "AC-5"
+    ],
+    "value": null,
+    "expect": "error"
+   }
+  ],
+  "generated_test_code": "import pytest\nfrom rukh import book, cancel, freeze, remind\n\n\ndef test_book_free_place():\n    assert book(group_size=11).ok is True\n\n\ndef test_cancel_runs():\n    cancel(booking_id=1)\n\n\ndef test_waitlist_limit():\n    assert True\n\n\ndef test_freeze_result():\n    result = freeze(days=14)\n    assert result is not None\n\n\ndef test_overbook_rejected():\n    with pytest.raises(ValueError):\n        book(group_size=12)\n\n\ndef test_swallowed_error():\n    try:\n        assert book(group_size=13).ok is False\n    except Exception:\n        pass\n\n\n@pytest.mark.skip(reason=\"потім\")\ndef test_reminder_time():\n    assert remind(2) == \"надіслано\"\n\n\ndef test_cancel_twice():\n    booking = cancel(booking_id=2)\n    assert booking == booking\n"
+ },
+ "outgoing_texts": [
+  "Учасниця Ірина Коваль (irina.koval@example.com, +380 50 111 22 33) не змогла скасувати запис. Тренер Олег Бондар відповів Ірині Коваль на номер 050-111-22-33. Копія: olena.sydor@example.com.",
+  "Для налагодження: password=Hunter2xx і адреса api.example.com. Учасник Олег Бондар питає про абонемент."
+ ],
+ "roster": [
+  [
+   "Ірина Коваль",
+   "Ірині Коваль",
+   "Ірини Коваль"
+  ],
+  [
+   "Олег Бондар",
+   "Олега Бондаря"
+  ]
+ ],
+ "tasks_for_assistant": [
+  {
+   "id": "Z-1",
+   "personal_data": false,
+   "anonymized": false,
+   "secret_data": false,
+   "decision": "немає",
+   "error_cost": "низька",
+   "reversible": true,
+   "checkable": "людиною"
+  },
+  {
+   "id": "Z-2",
+   "personal_data": false,
+   "anonymized": false,
+   "secret_data": false,
+   "decision": "немає",
+   "error_cost": "середня",
+   "reversible": true,
+   "checkable": "автоматично"
+  },
+  {
+   "id": "Z-3",
+   "personal_data": false,
+   "anonymized": false,
+   "secret_data": false,
+   "decision": "пріоритет",
+   "error_cost": "низька",
+   "reversible": true,
+   "checkable": "людиною"
+  },
+  {
+   "id": "Z-4",
+   "personal_data": true,
+   "anonymized": false,
+   "secret_data": false,
+   "decision": "немає",
+   "error_cost": "низька",
+   "reversible": true,
+   "checkable": "людиною"
+  },
+  {
+   "id": "Z-5",
+   "personal_data": true,
+   "anonymized": true,
+   "secret_data": false,
+   "decision": "немає",
+   "error_cost": "низька",
+   "reversible": true,
+   "checkable": "людиною"
+  },
+  {
+   "id": "Z-6",
+   "personal_data": false,
+   "anonymized": false,
+   "secret_data": false,
+   "decision": "немає",
+   "error_cost": "висока",
+   "reversible": false,
+   "checkable": "автоматично"
+  },
+  {
+   "id": "Z-7",
+   "personal_data": false,
+   "anonymized": false,
+   "secret_data": false,
+   "decision": "немає",
+   "error_cost": "низька",
+   "reversible": true,
+   "checkable": "ні"
+  },
+  {
+   "id": "Z-8",
+   "personal_data": false,
+   "anonymized": false,
+   "secret_data": true,
+   "decision": "немає",
+   "error_cost": "низька",
+   "reversible": true,
+   "checkable": "людиною"
+  }
+ ],
+ "usage_log": [
+  {
+   "id": "A-01",
+   "date": "2026-09-14",
+   "stage": "історії",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "правка",
+   "minutes_ai": 18,
+   "minutes_manual_est": 35,
+   "defects_caught": 2,
+   "defects_escaped": 0,
+   "note": "Правок немає, результат прийнято."
+  },
+  {
+   "id": "A-02",
+   "date": "2026-09-14",
+   "stage": "критерії приймання",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "прийнято",
+   "minutes_ai": 9,
+   "minutes_manual_est": 20,
+   "defects_caught": 0,
+   "defects_escaped": 1,
+   "note": "Правок немає, результат прийнято."
+  },
+  {
+   "id": "A-03",
+   "date": "2026-09-16",
+   "stage": "тести",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "правка",
+   "minutes_ai": 22,
+   "minutes_manual_est": 40,
+   "defects_caught": 3,
+   "defects_escaped": 0,
+   "note": "Правок немає, результат прийнято."
+  },
+  {
+   "id": "A-04",
+   "date": "2026-09-16",
+   "stage": "тести",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "відхилено",
+   "minutes_ai": 15,
+   "minutes_manual_est": 30,
+   "defects_caught": 2,
+   "defects_escaped": 0,
+   "note": "Правок немає, результат прийнято."
+  },
+  {
+   "id": "A-05",
+   "date": "2026-09-21",
+   "stage": "історії",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "прийнято",
+   "minutes_ai": 7,
+   "minutes_manual_est": 25,
+   "defects_caught": 0,
+   "defects_escaped": 1,
+   "note": "Правок немає, результат прийнято."
+  },
+  {
+   "id": "A-06",
+   "date": "2026-09-22",
+   "stage": "оцінки",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "відхилено",
+   "minutes_ai": 12,
+   "minutes_manual_est": 10,
+   "defects_caught": 1,
+   "defects_escaped": 0,
+   "note": "Правок немає, результат прийнято."
+  },
+  {
+   "id": "A-07",
+   "date": "2026-09-23",
+   "stage": "тести",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "прийнято",
+   "minutes_ai": 6,
+   "minutes_manual_est": 18,
+   "defects_caught": 0,
+   "defects_escaped": 0,
+   "note": "Правок немає, результат прийнято."
+  },
+  {
+   "id": "A-08",
+   "date": "2026-09-28",
+   "stage": "історії",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "правка",
+   "minutes_ai": 20,
+   "minutes_manual_est": 30,
+   "defects_caught": 1,
+   "defects_escaped": 0,
+   "note": "Правок немає, результат прийнято."
+  }
+ ],
+ "usage_log_to_check": [
+  {
+   "id": "A-01",
+   "date": "2026-09-14",
+   "stage": "історії",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "правка",
+   "minutes_ai": 18,
+   "minutes_manual_est": 35,
+   "defects_caught": 2,
+   "defects_escaped": 0,
+   "note": "Виправлено роль і прибрано вигадану знижку."
+  },
+  {
+   "id": "A-02",
+   "date": "2026-09-15",
+   "stage": "тести",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "прийнято",
+   "minutes_ai": 9,
+   "minutes_manual_est": 20,
+   "defects_caught": 1,
+   "defects_escaped": 0,
+   "note": "Правок немає, результат прийнято."
+  },
+  {
+   "id": "A-03",
+   "date": "2026-09-16",
+   "stage": "лотерея",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "правка",
+   "minutes_ai": 22,
+   "minutes_manual_est": 40,
+   "defects_caught": 3,
+   "defects_escaped": 0,
+   "note": "Правка"
+  },
+  {
+   "id": "A-03",
+   "date": "2026-10-30",
+   "stage": "тести",
+   "tool": "Асистент А",
+   "request": "Створи тести",
+   "data_class": "вигадані",
+   "outcome": "відхилено",
+   "minutes_ai": 0,
+   "minutes_manual_est": 30,
+   "defects_caught": 2,
+   "defects_escaped": 0,
+   "note": "Не про наш продукт взагалі."
+  },
+  {
+   "id": "A-05",
+   "date": "2026-09-21",
+   "stage": "історії",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "персональні",
+   "outcome": "прийнято",
+   "minutes_ai": 7,
+   "minutes_manual_est": 25,
+   "defects_caught": 0,
+   "defects_escaped": 1,
+   "note": "Правок немає, результат прийнято."
+  }
+ ],
+ "changes": [
+  {
+   "id": "PR-1",
+   "title": "Скасування запису",
+   "ai_used": true,
+   "zone": "лише з перевіркою",
+   "author": "Андрій",
+   "reviewer": "Марія",
+   "lines": 120,
+   "tests_added": 3,
+   "tests_pass": true,
+   "secrets_scan": true,
+   "log_entry": "A-03"
+  },
+  {
+   "id": "PR-2",
+   "title": "Колір кнопки",
+   "ai_used": false,
+   "zone": null,
+   "author": "Марія",
+   "reviewer": "Андрій",
+   "lines": 40,
+   "tests_added": 0,
+   "tests_pass": true,
+   "secrets_scan": true,
+   "log_entry": null
+  },
+  {
+   "id": "PR-3",
+   "title": "Правила знижок",
+   "ai_used": true,
+   "zone": "не можна",
+   "author": "Андрій",
+   "reviewer": "Марія",
+   "lines": 80,
+   "tests_added": 1,
+   "tests_pass": true,
+   "secrets_scan": true,
+   "log_entry": "A-05"
+  },
+  {
+   "id": "PR-4",
+   "title": "Текст нагадування",
+   "ai_used": true,
+   "zone": "можна",
+   "author": "Марія",
+   "reviewer": null,
+   "lines": 60,
+   "tests_added": 0,
+   "tests_pass": true,
+   "secrets_scan": true,
+   "log_entry": "A-07"
+  },
+  {
+   "id": "PR-5",
+   "title": "Список очікування",
+   "ai_used": true,
+   "zone": "лише з перевіркою",
+   "author": "Марія",
+   "reviewer": "Марія",
+   "lines": 350,
+   "tests_added": 0,
+   "tests_pass": false,
+   "secrets_scan": false,
+   "log_entry": "A-09"
+  },
+  {
+   "id": "PR-6",
+   "title": "Заморожування",
+   "ai_used": null,
+   "zone": null,
+   "author": "Андрій",
+   "reviewer": "Марія",
+   "lines": 90,
+   "tests_added": 2,
+   "tests_pass": true,
+   "secrets_scan": true,
+   "log_entry": null
+  }
+ ],
+ "log_ids": [
+  "A-01",
+  "A-02",
+  "A-03",
+  "A-04",
+  "A-05",
+  "A-06",
+  "A-07",
+  "A-08"
+ ],
+ "sprint": {
+  "stories": {
+   "прийняти": 1,
+   "доопрацювати": 3,
+   "відхилити": 2
+  },
+  "requirements": {
+   "підтверджена": 3,
+   "суперечить": 3,
+   "вигадана": 2
+  },
+  "coverage_pct": 40.0,
+  "weak": {
+   "weak": 6,
+   "total": 8
+  },
+  "log": {
+   "caught": 9,
+   "escaped": 2
+  },
+  "gate": {
+   "прийнято": 2,
+   "повернуто": 3,
+   "відхилено": 1
+  }
+ }
+}

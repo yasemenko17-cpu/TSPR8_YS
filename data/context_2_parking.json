@@ -1,0 +1,657 @@
+{
+ "context": 2,
+ "name": "Паркуй",
+ "domain": "мобільний застосунок бронювання місць на паркінгу",
+ "description": [
+  "Мобільний застосунок «Паркуй» дає змогу водіям бронювати місце на паркінгу наперед.",
+  "Бронь діє до 24 годин, вартість становить 30 грн за годину.",
+  "Водій може мати не більше 3 активних бронювань.",
+  "Пільговий час після закінчення броні становить 10 хвилин.",
+  "Повне повернення коштів можливе за скасування не пізніше ніж за 30 хвилин до початку.",
+  "Оператор паркінгу бачить завантаженість, власник паркінгу задає тарифи."
+ ],
+ "roles": [
+  "водій",
+  "оператор",
+  "власник паркінгу"
+ ],
+ "solution_words": [
+  "sql",
+  "api",
+  "json",
+  "кнопк",
+  "таблиц",
+  "push",
+  "базі даних"
+ ],
+ "facts": [
+  {
+   "stem": "діє",
+   "value": 24,
+   "unit": "год"
+  },
+  {
+   "stem": "вартіст",
+   "value": 30,
+   "unit": "грн"
+  },
+  {
+   "stem": "активн",
+   "value": 3,
+   "unit": "бронь"
+  },
+  {
+   "stem": "пільгов",
+   "value": 10,
+   "unit": "хв"
+  },
+  {
+   "stem": "повернен",
+   "value": 30,
+   "unit": "хв"
+  }
+ ],
+ "features": [
+  "завантаженість",
+  "завантаженост",
+  "тариф",
+  "водій",
+  "оператор",
+  "власник"
+ ],
+ "assistant_answers": {
+  "draft_stories": [
+   {
+    "id": "D-1",
+    "text": "Як водій, я хочу забронювати місце на паркінгу наперед, щоб не шукати вільне місце на місці.",
+    "criteria": [
+     "Дано вільне місце, коли водій бронює, тоді воно закріплене за ним.",
+     "Дано зайняте місце, коли водій бронює, тоді він бачить відмову."
+    ],
+    "estimate": 5
+   },
+   {
+    "id": "D-2",
+    "text": "Як гість, я хочу оплатити парковку без реєстрації, щоб заощадити час.",
+    "criteria": [
+     "Дано гостя, коли він оплачує, тоді квитанція надіслана.",
+     "Дано гостя без реєстрації, коли він повторює оплату, тоді дані не зберігаються."
+    ],
+    "estimate": 3
+   },
+   {
+    "id": "D-3",
+    "text": "Як оператор, я хочу бачити завантаженість паркінгу, щоб бачити завантаженість.",
+    "criteria": [
+     "Дано паркінг, коли оператор відкриває екран, тоді видно відсоток зайнятих місць.",
+     "Дано зміну броні, коли минула хвилина, тоді показник оновлено."
+    ],
+    "estimate": 3
+   },
+   {
+    "id": "D-4",
+    "text": "Як водій, я хочу зберегти бронь в json і викликати api, щоб користуватися бронню офлайн.",
+    "criteria": [
+     "Дано бронь, коли водій виходить із мережі, тоді бронь доступна.",
+     "Дано відновлення мережі, коли застосунок оновлюється, тоді бронь синхронізується."
+    ],
+    "estimate": 5
+   },
+   {
+    "id": "D-5",
+    "text": "Як власник паркінгу, я хочу задавати тарифи за годину, щоб керувати доходом паркінгу.",
+    "criteria": [
+     "Дано новий тариф, коли власник зберігає, тоді він діє для нових броней."
+    ],
+    "estimate": 3
+   },
+   {
+    "id": "D-6",
+    "text": "Як водій, я хочу скасувати бронь, щоб повернути кошти.",
+    "criteria": [
+     "Дано бронь за 40 хвилин до початку, коли водій скасовує, тоді кошти повернуто повністю.",
+     "Дано бронь за 10 хвилин до початку, коли водій скасовує, тоді кошти не повертаються.",
+     "Дано скасовану бронь, коли минув день, тоді статус не змінюється."
+    ],
+    "estimate": 3
+   }
+  ],
+  "draft_requirements": [
+   {
+    "id": "R-1",
+    "text": "Бронь діє до 24 годин."
+   },
+   {
+    "id": "R-2",
+    "text": "Вартість паркування становить 30 грн."
+   },
+   {
+    "id": "R-3",
+    "text": "Водій може мати 5 активних бронювань."
+   },
+   {
+    "id": "R-4",
+    "text": "Пільговий час після закінчення броні становить 15 хвилин."
+   },
+   {
+    "id": "R-5",
+    "text": "Повернення коштів можливе за скасування за 1 годину до початку."
+   },
+   {
+    "id": "R-6",
+    "text": "Застосунок підтримує оплату криптовалютою."
+   },
+   {
+    "id": "R-7",
+    "text": "Оператор паркінгу бачить завантаженість."
+   },
+   {
+    "id": "R-8",
+    "text": "Власник паркінгу задає тарифи і платить штраф 100 грн за зміну."
+   }
+  ],
+  "acceptance_criteria": [
+   {
+    "id": "AC-1",
+    "boundary": 24
+   },
+   {
+    "id": "AC-2",
+    "boundary": 3
+   },
+   {
+    "id": "AC-3",
+    "boundary": 10
+   },
+   {
+    "id": "AC-4",
+    "boundary": null
+   },
+   {
+    "id": "AC-5",
+    "boundary": null
+   },
+   {
+    "id": "AC-6",
+    "boundary": 30
+   }
+  ],
+  "generated_tests": [
+   {
+    "id": "T-1",
+    "covers": [
+     "AC-1"
+    ],
+    "value": 24,
+    "expect": "ok"
+   },
+   {
+    "id": "T-2",
+    "covers": [
+     "AC-1"
+    ],
+    "value": 25,
+    "expect": "error"
+   },
+   {
+    "id": "T-3",
+    "covers": [
+     "AC-2"
+    ],
+    "value": 3,
+    "expect": "ok"
+   },
+   {
+    "id": "T-4",
+    "covers": [
+     "AC-2"
+    ],
+    "value": 4,
+    "expect": "error"
+   },
+   {
+    "id": "T-5",
+    "covers": [
+     "AC-3"
+    ],
+    "value": 10,
+    "expect": "ok"
+   },
+   {
+    "id": "T-6",
+    "covers": [
+     "AC-4"
+    ],
+    "value": null,
+    "expect": "ok"
+   },
+   {
+    "id": "T-7",
+    "covers": [
+     "AC-4"
+    ],
+    "value": null,
+    "expect": "ok"
+   },
+   {
+    "id": "T-8",
+    "covers": [
+     "AC-6",
+     "AC-7"
+    ],
+    "value": 30,
+    "expect": "ok"
+   },
+   {
+    "id": "T-9",
+    "covers": [
+     "AC-6"
+    ],
+    "value": 31,
+    "expect": "error"
+   },
+   {
+    "id": "T-10",
+    "covers": [],
+    "value": 5,
+    "expect": "error"
+   }
+  ],
+  "generated_test_code": "import pytest\nfrom parkuy import reserve, cancel, price, grace\n\n\ndef test_reserve_free_slot():\n    assert reserve(slot=5, hours=2).status == \"активна\"\n\n\ndef test_price_per_hour():\n    assert price(hours=2) == 60\n\n\ndef test_cancel_refund():\n    refund = cancel(reserve_id=7, minutes_before=40)\n    assert refund is not None\n\n\ndef test_limit_of_three():\n    for n in range(3):\n        reserve(slot=n, hours=1)\n    assert len([1, 2, 3]) >= 0\n\n\ndef test_grace_period():\n    assert isinstance(grace(minutes=10), int)\n\n\ndef test_over_24_hours():\n    with pytest.raises(ValueError):\n        reserve(slot=1, hours=25)\n\n\ndef test_double_booking():\n    reserve(slot=9, hours=1)\n    reserve(slot=9, hours=1)\n"
+ },
+ "outgoing_texts": [
+  "Водій Петро Шевчук (petro.shevchuk@example.org, 0671112233) просить повернути 90 грн за бронь. Оператор Ганна Мельник підтвердила Петру Шевчуку, що кошти повернуто. Резервна пошта: p.shevchuk@example.org.",
+  "Токен для тесту: Bearer abcdefghijklmnopqrstuvwxyz0123. Водій Петро Шевчук скаржиться на тариф."
+ ],
+ "roster": [
+  [
+   "Петро Шевчук",
+   "Петру Шевчуку",
+   "Петра Шевчука"
+  ],
+  [
+   "Ганна Мельник",
+   "Ганні Мельник"
+  ]
+ ],
+ "tasks_for_assistant": [
+  {
+   "id": "Z-1",
+   "personal_data": false,
+   "anonymized": false,
+   "secret_data": false,
+   "decision": "немає",
+   "error_cost": "середня",
+   "reversible": true,
+   "checkable": "людиною"
+  },
+  {
+   "id": "Z-2",
+   "personal_data": false,
+   "anonymized": false,
+   "secret_data": false,
+   "decision": "немає",
+   "error_cost": "висока",
+   "reversible": false,
+   "checkable": "людиною"
+  },
+  {
+   "id": "Z-3",
+   "personal_data": true,
+   "anonymized": false,
+   "secret_data": false,
+   "decision": "немає",
+   "error_cost": "середня",
+   "reversible": true,
+   "checkable": "людиною"
+  },
+  {
+   "id": "Z-4",
+   "personal_data": false,
+   "anonymized": false,
+   "secret_data": false,
+   "decision": "схвалення власної зміни",
+   "error_cost": "низька",
+   "reversible": true,
+   "checkable": "людиною"
+  },
+  {
+   "id": "Z-5",
+   "personal_data": false,
+   "anonymized": false,
+   "secret_data": false,
+   "decision": "немає",
+   "error_cost": "низька",
+   "reversible": true,
+   "checkable": "автоматично"
+  },
+  {
+   "id": "Z-6",
+   "personal_data": false,
+   "anonymized": false,
+   "secret_data": false,
+   "decision": "немає",
+   "error_cost": "середня",
+   "reversible": true,
+   "checkable": "ні"
+  },
+  {
+   "id": "Z-7",
+   "personal_data": true,
+   "anonymized": true,
+   "secret_data": false,
+   "decision": "немає",
+   "error_cost": "низька",
+   "reversible": true,
+   "checkable": "людиною"
+  },
+  {
+   "id": "Z-8",
+   "personal_data": true,
+   "anonymized": false,
+   "secret_data": false,
+   "decision": "розмова з користувачем",
+   "error_cost": "низька",
+   "reversible": true,
+   "checkable": "людиною"
+  }
+ ],
+ "usage_log": [
+  {
+   "id": "B-01",
+   "date": "2026-09-07",
+   "stage": "історії",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "прийнято",
+   "minutes_ai": 10,
+   "minutes_manual_est": 30,
+   "defects_caught": 0,
+   "defects_escaped": 1,
+   "note": "Правок немає, результат прийнято."
+  },
+  {
+   "id": "B-02",
+   "date": "2026-09-08",
+   "stage": "історії",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "прийнято",
+   "minutes_ai": 8,
+   "minutes_manual_est": 25,
+   "defects_caught": 0,
+   "defects_escaped": 0,
+   "note": "Правок немає, результат прийнято."
+  },
+  {
+   "id": "B-03",
+   "date": "2026-09-09",
+   "stage": "критерії приймання",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "прийнято",
+   "minutes_ai": 12,
+   "minutes_manual_est": 30,
+   "defects_caught": 0,
+   "defects_escaped": 2,
+   "note": "Правок немає, результат прийнято."
+  },
+  {
+   "id": "B-04",
+   "date": "2026-09-14",
+   "stage": "тести",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "прийнято",
+   "minutes_ai": 9,
+   "minutes_manual_est": 22,
+   "defects_caught": 1,
+   "defects_escaped": 0,
+   "note": "Правок немає, результат прийнято."
+  },
+  {
+   "id": "B-05",
+   "date": "2026-09-15",
+   "stage": "тести",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "прийнято",
+   "minutes_ai": 7,
+   "minutes_manual_est": 20,
+   "defects_caught": 0,
+   "defects_escaped": 1,
+   "note": "Правок немає, результат прийнято."
+  },
+  {
+   "id": "B-06",
+   "date": "2026-09-16",
+   "stage": "оцінки",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "правка",
+   "minutes_ai": 14,
+   "minutes_manual_est": 12,
+   "defects_caught": 1,
+   "defects_escaped": 0,
+   "note": "Правок немає, результат прийнято."
+  },
+  {
+   "id": "B-07",
+   "date": "2026-09-21",
+   "stage": "код",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "відхилено",
+   "minutes_ai": 25,
+   "minutes_manual_est": 40,
+   "defects_caught": 2,
+   "defects_escaped": 0,
+   "note": "Правок немає, результат прийнято."
+  }
+ ],
+ "usage_log_to_check": [
+  {
+   "id": "B-01",
+   "date": "2026-09-07",
+   "stage": "історії",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "прийнято",
+   "minutes_ai": 10,
+   "minutes_manual_est": 30,
+   "defects_caught": 0,
+   "defects_escaped": 1,
+   "note": "Правок немає, результат прийнято."
+  },
+  {
+   "id": "B-02",
+   "date": "2026-09-08",
+   "stage": "тести",
+   "tool": "Асистент А",
+   "request": "Дай тести",
+   "data_class": "вигадані",
+   "outcome": "правка",
+   "minutes_ai": 8,
+   "minutes_manual_est": 25,
+   "defects_caught": 1,
+   "defects_escaped": 0,
+   "note": "Додано граничні значення часу."
+  },
+  {
+   "id": "B-03",
+   "date": "2026-09-09",
+   "stage": "оцінки",
+   "tool": "Асистент Б",
+   "request": "Оціни складність історій у балах Fibonacci",
+   "data_class": "вигадані",
+   "outcome": "прийнято",
+   "minutes_ai": "десять",
+   "minutes_manual_est": 20,
+   "defects_caught": 0,
+   "defects_escaped": 0,
+   "note": "Прийнято."
+  },
+  {
+   "id": "B-04",
+   "date": "2026-09-31",
+   "stage": "код",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "прийнято",
+   "minutes_ai": 9,
+   "minutes_manual_est": 22,
+   "defects_caught": 0,
+   "defects_escaped": 0,
+   "note": "Правок немає, результат прийнято."
+  },
+  {
+   "id": "B-05",
+   "date": "2026-09-15",
+   "stage": "тести",
+   "tool": "Асистент А",
+   "request": "Створи тести на скасування броні за описом",
+   "outcome": "правка",
+   "minutes_ai": 7,
+   "minutes_manual_est": 20,
+   "defects_caught": 1,
+   "defects_escaped": 0
+  }
+ ],
+ "changes": [
+  {
+   "id": "PR-1",
+   "title": "Розрахунок вартості",
+   "ai_used": true,
+   "zone": "лише з перевіркою",
+   "author": "Тарас",
+   "reviewer": "Леся",
+   "lines": 90,
+   "tests_added": 2,
+   "tests_pass": true,
+   "secrets_scan": true,
+   "log_entry": "B-04"
+  },
+  {
+   "id": "PR-2",
+   "title": "Журнал оплат",
+   "ai_used": true,
+   "zone": "лише з перевіркою",
+   "author": "Леся",
+   "reviewer": "Тарас",
+   "lines": 280,
+   "tests_added": 1,
+   "tests_pass": true,
+   "secrets_scan": true,
+   "log_entry": "B-09"
+  },
+  {
+   "id": "PR-3",
+   "title": "Текст помилки",
+   "ai_used": true,
+   "zone": "можна",
+   "author": "Тарас",
+   "reviewer": null,
+   "lines": 15,
+   "tests_added": 0,
+   "tests_pass": true,
+   "secrets_scan": true,
+   "log_entry": "B-05"
+  },
+  {
+   "id": "PR-4",
+   "title": "Статус броні",
+   "ai_used": false,
+   "zone": null,
+   "author": "Леся",
+   "reviewer": "Тарас",
+   "lines": 640,
+   "tests_added": 2,
+   "tests_pass": true,
+   "secrets_scan": true,
+   "log_entry": null
+  },
+  {
+   "id": "PR-5",
+   "title": "Пріоритети тарифів",
+   "ai_used": true,
+   "zone": "не можна",
+   "author": "Тарас",
+   "reviewer": "Леся",
+   "lines": 50,
+   "tests_added": 1,
+   "tests_pass": true,
+   "secrets_scan": true,
+   "log_entry": "B-06"
+  },
+  {
+   "id": "PR-6",
+   "title": "Скасування",
+   "ai_used": true,
+   "zone": "лише з перевіркою",
+   "author": "Тарас",
+   "reviewer": "Леся",
+   "lines": 140,
+   "tests_added": 3,
+   "tests_pass": true,
+   "secrets_scan": false,
+   "log_entry": "B-07"
+  },
+  {
+   "id": "PR-7",
+   "title": "Завантаженість",
+   "ai_used": true,
+   "zone": "можна",
+   "author": "Леся",
+   "reviewer": "Тарас",
+   "lines": 700,
+   "tests_added": 1,
+   "tests_pass": true,
+   "secrets_scan": true,
+   "log_entry": "B-01"
+  }
+ ],
+ "log_ids": [
+  "B-01",
+  "B-02",
+  "B-03",
+  "B-04",
+  "B-05",
+  "B-06",
+  "B-07"
+ ],
+ "sprint": {
+  "stories": {
+   "прийняти": 3,
+   "доопрацювати": 2,
+   "відхилити": 1
+  },
+  "requirements": {
+   "підтверджена": 5,
+   "суперечить": 1,
+   "вигадана": 0
+  },
+  "coverage_pct": 83.3,
+  "weak": {
+   "weak": 1,
+   "total": 7
+  },
+  "log": {
+   "caught": 4,
+   "escaped": 5
+  },
+  "gate": {
+   "прийнято": 4,
+   "повернуто": 1,
+   "відхилено": 1
+  }
+ }
+}

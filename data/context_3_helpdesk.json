@@ -1,0 +1,613 @@
+{
+ "context": 3,
+ "name": "ІТ-заявки",
+ "domain": "портал заявок до ІТ-служби коледжу",
+ "description": [
+  "Портал «ІТ-заявки» приймає звернення працівників коледжу до ІТ-служби.",
+  "Відповідь на критичну заявку надається протягом 4 годин.",
+  "До заявки можна додати не більше 5 файлів, розмір кожного не перевищує 10 МБ.",
+  "Заявка без відповіді працівника автоматично закривається через 7 діб.",
+  "Працівник оцінює виконання за шкалою від 1 до 5.",
+  "Керівник служби бачить звіт за тиждень, технік призначається на заявку автоматично."
+ ],
+ "roles": [
+  "працівник",
+  "технік",
+  "керівник служби"
+ ],
+ "solution_words": [
+  "sql",
+  "api",
+  "json",
+  "кнопк",
+  "таблиц",
+  "базі даних",
+  "чат-бот"
+ ],
+ "facts": [
+  {
+   "stem": "критичн",
+   "value": 4,
+   "unit": "год"
+  },
+  {
+   "stem": "файл",
+   "value": 5,
+   "unit": "файл"
+  },
+  {
+   "stem": "розмір",
+   "value": 10,
+   "unit": "мб"
+  },
+  {
+   "stem": "закрива",
+   "value": 7,
+   "unit": "доб"
+  }
+ ],
+ "features": [
+  "оцінк",
+  "звіт",
+  "технік",
+  "призначає",
+  "працівник"
+ ],
+ "assistant_answers": {
+  "draft_stories": [
+   {
+    "id": "D-1",
+    "text": "Як працівник, я хочу створити заявку з описом проблеми, щоб технік швидко її розв'язав.",
+    "criteria": [
+     "Дано форму, коли працівник заповнює опис і надсилає, тоді заявку створено.",
+     "Дано порожній опис, коли працівник надсилає, тоді показано помилку."
+    ],
+    "estimate": 3
+   },
+   {
+    "id": "D-2",
+    "text": "Як технік, я хочу бачити нові заявки, щоб бачити нові заявки.",
+    "criteria": [
+     "Дано нову заявку, коли технік відкриває список, тоді вона видна."
+    ],
+    "estimate": 2
+   },
+   {
+    "id": "D-3",
+    "text": "Як студент, я хочу подати заявку на заміну клавіатури, щоб працювати зручно.",
+    "criteria": [
+     "Дано студента, коли він подає заявку, тоді вона прийнята.",
+     "Дано заявку студента, коли вона опрацьована, тоді статус змінено."
+    ],
+    "estimate": 3
+   },
+   {
+    "id": "D-4",
+    "text": "Як керівник служби, я хочу бачити таблицю заявок у sql-запиті, щоб контролювати терміни.",
+    "criteria": [
+     "Дано тиждень, коли керівник відкриває звіт, тоді бачить заявки.",
+     "Дано прострочену заявку, коли звіт будується, тоді вона підсвічена."
+    ],
+    "estimate": 5
+   },
+   {
+    "id": "D-5",
+    "text": "Як працівник, я хочу оцінити виконання заявки від 1 до 5, щоб служба покращувала якість.",
+    "criteria": [
+     "Дано виконану заявку, коли працівник ставить 5, тоді оцінку збережено.",
+     "Дано оцінку 6, коли працівник надсилає, тоді показано помилку.",
+     "Дано оцінену заявку, коли працівник змінює оцінку, тоді вона оновлена."
+    ],
+    "estimate": 2
+   },
+   {
+    "id": "D-6",
+    "text": "Як працівник, я хочу додавати файли до заявки, щоб показати помилку на знімку екрана.",
+    "criteria": [
+     "Дано 5 файлів, коли працівник додає шостий, тоді показано помилку."
+    ],
+    "estimate": 3
+   }
+  ],
+  "draft_requirements": [
+   {
+    "id": "R-1",
+    "text": "Відповідь на критичну заявку надається протягом 4 годин."
+   },
+   {
+    "id": "R-2",
+    "text": "До заявки можна додати 10 файлів."
+   },
+   {
+    "id": "R-3",
+    "text": "Розмір файлу не перевищує 10 МБ."
+   },
+   {
+    "id": "R-4",
+    "text": "Заявка закривається автоматично через 168 годин без відповіді."
+   },
+   {
+    "id": "R-5",
+    "text": "Заявка закривається автоматично через 3 доби без відповіді."
+   },
+   {
+    "id": "R-6",
+    "text": "Портал інтегрується з телефонною станцією коледжу."
+   },
+   {
+    "id": "R-7",
+    "text": "Працівник оцінює виконання заявки."
+   },
+   {
+    "id": "R-8",
+    "text": "Для критичної заявки технік приїздить за 30 хвилин."
+   }
+  ],
+  "acceptance_criteria": [
+   {
+    "id": "AC-1",
+    "boundary": 5
+   },
+   {
+    "id": "AC-2",
+    "boundary": 10
+   },
+   {
+    "id": "AC-3",
+    "boundary": 7
+   },
+   {
+    "id": "AC-4",
+    "boundary": null
+   }
+  ],
+  "generated_tests": [
+   {
+    "id": "T-1",
+    "covers": [
+     "AC-1"
+    ],
+    "value": 5,
+    "expect": "ok"
+   },
+   {
+    "id": "T-2",
+    "covers": [
+     "AC-1"
+    ],
+    "value": 6,
+    "expect": "error"
+   },
+   {
+    "id": "T-3",
+    "covers": [
+     "AC-2"
+    ],
+    "value": 10,
+    "expect": "ok"
+   },
+   {
+    "id": "T-4",
+    "covers": [
+     "AC-2"
+    ],
+    "value": 11,
+    "expect": "error"
+   },
+   {
+    "id": "T-5",
+    "covers": [
+     "AC-3"
+    ],
+    "value": 7,
+    "expect": "ok"
+   },
+   {
+    "id": "T-6",
+    "covers": [
+     "AC-3"
+    ],
+    "value": 8,
+    "expect": "error"
+   },
+   {
+    "id": "T-7",
+    "covers": [
+     "AC-4"
+    ],
+    "value": null,
+    "expect": "ok"
+   },
+   {
+    "id": "T-8",
+    "covers": [
+     "AC-4"
+    ],
+    "value": null,
+    "expect": "error"
+   }
+  ],
+  "generated_test_code": "import pytest\nfrom helpdesk import create, attach, close_idle, rate\n\n\ndef test_create_ticket():\n    ticket = create(text=\"Не працює принтер\")\n    assert ticket.status == \"нова\"\n\n\ndef test_attach_limit():\n    with pytest.raises(ValueError):\n        attach(files=6)\n\n\ndef test_close_after_seven_days():\n    assert close_idle(days=7).closed is True\n\n\ndef test_rate_range():\n    assert rate(5) == 5\n    assert rate(1) == 1\n"
+ },
+ "outgoing_texts": [
+  "Працівниця Оксана Лисенко (oksana.lysenko@example.net, +38 (067) 222-33-44) просить допомогу. Технік Василь Гнатюк зв'язався з Оксаною Лисенко. Для довідки: v.hnatiuk@example.net.",
+  "Рядок підключення: password: Qwerty123 для тестової бази. Технік Василь Гнатюк уточнює."
+ ],
+ "roster": [
+  [
+   "Оксана Лисенко",
+   "Оксані Лисенко",
+   "Оксану Лисенко"
+  ],
+  [
+   "Василь Гнатюк",
+   "Василя Гнатюка"
+  ]
+ ],
+ "tasks_for_assistant": [
+  {
+   "id": "Z-1",
+   "personal_data": false,
+   "anonymized": false,
+   "secret_data": false,
+   "decision": "немає",
+   "error_cost": "низька",
+   "reversible": true,
+   "checkable": "автоматично"
+  },
+  {
+   "id": "Z-2",
+   "personal_data": false,
+   "anonymized": false,
+   "secret_data": false,
+   "decision": "немає",
+   "error_cost": "середня",
+   "reversible": false,
+   "checkable": "людиною"
+  },
+  {
+   "id": "Z-3",
+   "personal_data": false,
+   "anonymized": false,
+   "secret_data": false,
+   "decision": "приймання",
+   "error_cost": "низька",
+   "reversible": true,
+   "checkable": "людиною"
+  },
+  {
+   "id": "Z-4",
+   "personal_data": true,
+   "anonymized": true,
+   "secret_data": false,
+   "decision": "немає",
+   "error_cost": "середня",
+   "reversible": true,
+   "checkable": "людиною"
+  },
+  {
+   "id": "Z-5",
+   "personal_data": false,
+   "anonymized": false,
+   "secret_data": false,
+   "decision": "немає",
+   "error_cost": "низька",
+   "reversible": true,
+   "checkable": "ні"
+  },
+  {
+   "id": "Z-6",
+   "personal_data": false,
+   "anonymized": false,
+   "secret_data": false,
+   "decision": "немає",
+   "error_cost": "висока",
+   "reversible": true,
+   "checkable": "ні"
+  },
+  {
+   "id": "Z-7",
+   "personal_data": false,
+   "anonymized": false,
+   "secret_data": true,
+   "decision": "пріоритет",
+   "error_cost": "низька",
+   "reversible": true,
+   "checkable": "людиною"
+  },
+  {
+   "id": "Z-8",
+   "personal_data": false,
+   "anonymized": false,
+   "secret_data": false,
+   "decision": "немає",
+   "error_cost": "висока",
+   "reversible": true,
+   "checkable": "автоматично"
+  }
+ ],
+ "usage_log": [
+  {
+   "id": "C-01",
+   "date": "2026-09-28",
+   "stage": "історії",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "відхилено",
+   "minutes_ai": 15,
+   "minutes_manual_est": 20,
+   "defects_caught": 1,
+   "defects_escaped": 0,
+   "note": "Правок немає, результат прийнято."
+  },
+  {
+   "id": "C-02",
+   "date": "2026-09-29",
+   "stage": "історії",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "відхилено",
+   "minutes_ai": 12,
+   "minutes_manual_est": 18,
+   "defects_caught": 1,
+   "defects_escaped": 0,
+   "note": "Правок немає, результат прийнято."
+  },
+  {
+   "id": "C-03",
+   "date": "2026-09-29",
+   "stage": "тести",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "відхилено",
+   "minutes_ai": 20,
+   "minutes_manual_est": 25,
+   "defects_caught": 2,
+   "defects_escaped": 0,
+   "note": "Правок немає, результат прийнято."
+  },
+  {
+   "id": "C-04",
+   "date": "2026-09-30",
+   "stage": "тести",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "правка",
+   "minutes_ai": 25,
+   "minutes_manual_est": 22,
+   "defects_caught": 2,
+   "defects_escaped": 1,
+   "note": "Правок немає, результат прийнято."
+  },
+  {
+   "id": "C-05",
+   "date": "2026-10-01",
+   "stage": "оцінки",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "відхилено",
+   "minutes_ai": 10,
+   "minutes_manual_est": 8,
+   "defects_caught": 0,
+   "defects_escaped": 0,
+   "note": "Правок немає, результат прийнято."
+  },
+  {
+   "id": "C-06",
+   "date": "2026-10-02",
+   "stage": "критерії приймання",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "прийнято",
+   "minutes_ai": 6,
+   "minutes_manual_est": 15,
+   "defects_caught": 0,
+   "defects_escaped": 0,
+   "note": "Правок немає, результат прийнято."
+  }
+ ],
+ "usage_log_to_check": [
+  {
+   "id": "C-01",
+   "date": "2026-09-28",
+   "stage": "історії",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "відхилено",
+   "minutes_ai": 15,
+   "minutes_manual_est": 20,
+   "defects_caught": 1,
+   "defects_escaped": 0,
+   "note": "Вигадана роль студента в історії."
+  },
+  {
+   "id": "C-02",
+   "date": "2026-09-29",
+   "stage": "тести",
+   "tool": "Асистент А",
+   "request": "Тести",
+   "data_class": "вигадані",
+   "outcome": "правка",
+   "minutes_ai": 12,
+   "minutes_manual_est": 18,
+   "defects_caught": 2,
+   "defects_escaped": 0,
+   "note": "Додано граничні значення файлів."
+  },
+  {
+   "id": "C-03",
+   "date": "2026-09-29",
+   "stage": "історії",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "прийнято",
+   "minutes_ai": 0,
+   "minutes_manual_est": 25,
+   "defects_caught": 0,
+   "defects_escaped": 0,
+   "note": "Правок немає, результат прийнято."
+  },
+  {
+   "id": "C-04",
+   "date": "2026-09-30",
+   "stage": "історії",
+   "tool": "Асистент А",
+   "request": "Згенеруй чернетку за описом продукту і словником ролей",
+   "data_class": "вигадані",
+   "outcome": "правка",
+   "minutes_ai": 25,
+   "minutes_manual_est": -5,
+   "defects_caught": -1,
+   "defects_escaped": 0,
+   "note": "Усе перероблено вручну повністю."
+  },
+  {
+   "id": "C-05",
+   "date": "2026-10-01",
+   "stage": "оцінки",
+   "request": "Оціни складність цих історій за шкалою Fibonacci",
+   "data_class": "секретні",
+   "outcome": "відхилено",
+   "minutes_ai": 10,
+   "minutes_manual_est": 8,
+   "defects_caught": 0,
+   "defects_escaped": 0,
+   "note": "Оцінка не враховує складність."
+  }
+ ],
+ "changes": [
+  {
+   "id": "PR-1",
+   "title": "Ліміт файлів",
+   "ai_used": true,
+   "zone": "лише з перевіркою",
+   "author": "Остап",
+   "reviewer": "Ірма",
+   "lines": 100,
+   "tests_added": 2,
+   "tests_pass": true,
+   "secrets_scan": true,
+   "log_entry": "C-04"
+  },
+  {
+   "id": "PR-2",
+   "title": "Оцінка виконання",
+   "ai_used": true,
+   "zone": "можна",
+   "author": "Ірма",
+   "reviewer": null,
+   "lines": 45,
+   "tests_added": 0,
+   "tests_pass": true,
+   "secrets_scan": true,
+   "log_entry": "C-06"
+  },
+  {
+   "id": "PR-3",
+   "title": "Звіт за тиждень",
+   "ai_used": true,
+   "zone": "лише з перевіркою",
+   "author": "Остап",
+   "reviewer": "",
+   "lines": 150,
+   "tests_added": 1,
+   "tests_pass": true,
+   "secrets_scan": true,
+   "log_entry": "C-02"
+  },
+  {
+   "id": "PR-4",
+   "title": "Розподіл заявок",
+   "ai_used": true,
+   "zone": "не можна",
+   "author": "Ірма",
+   "reviewer": "Остап",
+   "lines": 30,
+   "tests_added": 1,
+   "tests_pass": true,
+   "secrets_scan": true,
+   "log_entry": "C-03"
+  },
+  {
+   "id": "PR-5",
+   "title": "Автозакриття",
+   "ai_used": false,
+   "zone": null,
+   "author": "Остап",
+   "reviewer": "Ірма",
+   "lines": 601,
+   "tests_added": 1,
+   "tests_pass": true,
+   "secrets_scan": true,
+   "log_entry": null
+  },
+  {
+   "id": "PR-6",
+   "title": "Фільтр заявок",
+   "ai_used": true,
+   "zone": "лише з перевіркою",
+   "author": "Ірма",
+   "reviewer": "Остап",
+   "lines": 90,
+   "tests_added": 0,
+   "tests_pass": true,
+   "secrets_scan": true,
+   "log_entry": null
+  },
+  {
+   "id": "PR-7",
+   "title": "Шаблони відповідей",
+   "ai_used": false,
+   "zone": null,
+   "author": "Ірма",
+   "reviewer": "Остап",
+   "lines": 70,
+   "tests_added": 0,
+   "tests_pass": false,
+   "secrets_scan": true,
+   "log_entry": null
+  }
+ ],
+ "log_ids": [
+  "C-01",
+  "C-02",
+  "C-03",
+  "C-04",
+  "C-05",
+  "C-06"
+ ],
+ "sprint": {
+  "stories": {
+   "прийняти": 0,
+   "доопрацювати": 2,
+   "відхилити": 4
+  },
+  "requirements": {
+   "підтверджена": 2,
+   "суперечить": 4,
+   "вигадана": 2
+  },
+  "coverage_pct": 62.5,
+  "weak": {
+   "weak": 0,
+   "total": 4
+  },
+  "log": {
+   "caught": 6,
+   "escaped": 1
+  },
+  "gate": {
+   "прийнято": 2,
+   "повернуто": 4,
+   "відхилено": 1
+  }
+ }
+}
